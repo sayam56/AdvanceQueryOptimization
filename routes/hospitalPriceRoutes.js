@@ -1,11 +1,10 @@
-// routes/hospitalPriceRoutes.js
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const redis = require('redis');
 
-let redisPort = 6379;  // Replace with your redis port
-let redisHost = "127.0.0.1";  // Replace with your redis host
+let redisPort = 6379;
+let redisHost = "127.0.0.1";
 const client = redis.createClient({
     socket: {
         port: redisPort,
@@ -47,7 +46,7 @@ const hospitalPriceHandler = async (req, res) => {
 
     const specificPrice = Number(Price);
 
-    console.log(specificPrice);
+    //console.log(specificPrice);
     
     // Generate a unique cache key based on the query parameters
     const cacheKey = JSON.stringify({
@@ -71,7 +70,7 @@ const hospitalPriceHandler = async (req, res) => {
         console.log(`calling mongo`);
         // If not, execute the MongoDB query
         const result = await mongoose.connection.db.collection('hospital_prices').aggregate([
-          // Your aggregation pipeline here
+          // aggregation pipeline
           {
             $match: {
               description: 'SEIZURES WITH MCC',
@@ -133,12 +132,11 @@ const hospitalPriceHandler = async (req, res) => {
           },
         ]).toArray();
 
-        // Save the result in the Redis cache with an expiration time (e.g., 1 hour)
+        // Save the result in the Redis cache with an expiration time
         client.set(cacheKey, JSON.stringify(result), {
             EX: 5,
         });
 
-        // Send the result to the client
         res.json(result);
       }
     } else {
@@ -158,7 +156,6 @@ const hospitalPriceHandler = async (req, res) => {
   }
 };
 
-// Attach the route handler to the '/query' endpoint
 router.get('/query', hospitalPriceHandler);
 
 module.exports = router;
