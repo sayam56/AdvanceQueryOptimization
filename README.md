@@ -1,2 +1,2 @@
 # Mongis: A fast and reliable query platform that leverages MongoDB indexing and Redis caching
-This is a project to optimize query performance in modern applications using Indexing in MongoDB for the server side, and Redis In Memory caching to optimize the Client side. This two faced approach ensures optimal performance while also making sure that we are not loading the server side unnecessarily.
+This project aims to enhance query performance in contemporary applications by implementing MongoDB indexing on the server side and employing Redis In-Memory caching for client-side optimization. This dual approach ensures optimal performance while minimizing server-side load.
